@@ -1,0 +1,38 @@
+{
+  "name": "pizzashop-api",
+  "module": "src/http/server.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "bun --watch src/http/server.ts",
+    "build": "bun build src/http/server.ts",
+    "start": "NODE_ENV=production bun src/http/server.ts",
+    "test": "bun test",
+    "generate": "drizzle-kit generate:pg",
+    "studio": "drizzle-kit studio",
+    "migrate": "bun src/db/migrate.ts",
+    "seed": "bun src/db/seed.ts",
+    "lint": "eslint --fix src --ext ts"
+  },
+  "dependencies": {
+    "@elysiajs/jwt": "^1.0.2",
+    "@paralleldrive/cuid2": "^2.2.2",
+    "dayjs": "^1.11.11",
+    "drizzle-orm": "^0.30.9",
+    "elysia": "^1.0.15",
+    "nodemailer": "^6.9.13",
+    "postgres": "^3.4.4",
+    "zod": "^3.23.4"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "@rocketseat/eslint-config": "^2.2.2",
+    "@types/bun": "latest",
+    "@types/nodemailer": "^6.4.14",
+    "chalk": "^5.3.0",
+    "drizzle-kit": "^0.20.17",
+    "eslint": "^8.56.0",
+    "eslint-plugin-drizzle": "^0.2.3",
+    "pg": "^8.11.5",
+    "typescript": "^5.4.5"
+  }
+}
