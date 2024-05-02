@@ -19,8 +19,33 @@ import { getPopularProducts } from './routes/get-popular-products'
 import { getDailyRevenueInPeriod } from './routes/get-daily-revenue-in-period'
 import cors from '@elysiajs/cors'
 import { updateProfile } from './routes/update-profile'
+import { UnauthorizedError } from './errors/unauthorized-error'
 
 const app = new Elysia()
+  .error({
+    UNAUTHORIZED: UnauthorizedError,
+  })
+  .onError(({ code, error, set }) => {
+    switch (code) {
+      case 'UNAUTHORIZED': {
+        set.status = 401
+        return { code, message: error.message }
+      }
+      case 'VALIDATION': {
+        set.status = error.status
+
+        return error.toResponse()
+      }
+      case 'NOT_FOUND': {
+        return new Response(null, { status: 404 })
+      }
+      default: {
+        console.error(error)
+
+        return new Response(null, { status: 500 })
+      }
+    }
+  })
   .use(
     cors({
       credentials: true,
@@ -56,23 +81,6 @@ const app = new Elysia()
   .use(getPopularProducts)
   .use(getDailyRevenueInPeriod)
   .use(updateProfile)
-  .onError(({ code, error, set }) => {
-    switch (code) {
-      case 'VALIDATION': {
-        set.status = error.status
-
-        return error.toResponse()
-      }
-      case 'NOT_FOUND': {
-        return new Response(null, { status: 404 })
-      }
-      default: {
-        console.error(error)
-
-        return new Response(null, { status: 500 })
-      }
-    }
-  })
 
 app.listen(3333, () => {
   console.log('HTTP Server Running')
